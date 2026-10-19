@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>التقويم الدراسي - جامعة ابن سينا 2026-2027</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a365d;
+            --secondary: #2b6cb0;
+            --bg: #f7fafc;
+            --text: #2d3748;
+            --exam-bg: #fff5f5;
+            --exam-text: #c53030;
+            --holiday-bg: #f0fff4;
+            --holiday-text: #276749;
+            --result-bg: #ebf8ff;
+            --result-text: #2b6cb0;
+            --semester-bg: #faf5ff;
+            --semester-text: #6b46c1;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        header h1 { font-size: 28px; margin-bottom: 10px; font-weight: 800; }
+        header p { font-size: 18px; opacity: 0.9; }
+
+        .countdown-container {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-right: 5px solid var(--secondary);
+            transition: all 0.3s ease;
+        }
+        .countdown-title { font-size: 16px; color: #718096; margin-bottom: 5px; }
+        .countdown-event { font-size: 20px; font-weight: 700; color: var(--primary); margin-bottom: 10px; }
+        .countdown-timer {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        .time-box {
+            background: var(--primary);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            min-width: 70px;
+        }
+        .time-box span { display: block; font-size: 24px; font-weight: 800; }
+        .time-box small { font-size: 12px; opacity: 0.8; }
+
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .filters button {
+            padding: 10px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 30px;
+            background: white;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text);
+            transition: all 0.3s ease;
+        }
+        .filters button:hover { border-color: var(--secondary); color: var(--secondary); }
+        .filters button.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 6px rgba(26, 54, 93, 0.2);
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+        table { width: 100%; border-collapse: collapse; }
+        th, td {
+            padding: 18px 20px;
+            text-align: right;
+            border-bottom: 1px solid #edf2f7;
+        }
+        th { background: #f8fafc; color: var(--primary); font-weight: 700; font-size: 16px; }
+        td { font-size: 15px; }
+        tbody tr { transition: background 0.2s; }
+        tbody tr:hover { background: #f8fafc; }
+        tbody tr:last-child td { border-bottom: none; }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+        .badge-exam { background: var(--exam-bg); color: var(--exam-text); }
+        .badge-holiday { background: var(--holiday-bg); color: var(--holiday-text); }
+        .badge-result { background: var(--result-bg); color: var(--result-text); }
+        .badge-semester { background: var(--semester-bg); color: var(--semester-text); }
+
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: #718096;
+            margin-top: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+        footer p { margin-bottom: 5px; }
+        .stamp { font-weight: 700; color: var(--primary); letter-spacing: 1px; }
+
+        @media (max-width: 768px) {
+            table, thead, tbody, th, td, tr { display: block; }
+            thead tr { display: none; }
+            tr { margin-bottom: 15px; border: 1px solid #e2e8f0; border-radius: 10px; background: white; overflow: hidden; }
+            td { border-bottom: 1px solid #edf2f7; position: relative; padding-right: 45%; text-align: left; min-height: 50px; display: flex; align-items: center; justify-content: flex-end; }
+            td::before { content: attr(data-label); position: absolute; right: 15px; font-weight: 700; color: var(--primary); text-align: right; width: 40%; }
+            td:last-child { border-bottom: none; }
+            .countdown-timer { flex-direction: column; align-items: center; gap: 10px; }
+            .time-box { width: 100%; max-width: 150px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>جامعة ابن سينا</h1>
+        <p>التقويم الدراسي للعام 2026 – 2027 | السنة الثانية</p>
+    </header>
+
+    <div class="countdown-container">
+        <div class="countdown-title">الحدث القادم <span id="active-tab-name" style="font-weight: 700; color: var(--secondary);">(عرض الكل)</span></div>
+        <div class="countdown-event" id="next-event-title">جاري التحميل...</div>
+        <div class="countdown-timer">
+            <div class="time-box"><span id="days">0</span><small>يوم</small></div>
+            <div class="time-box"><span id="hours">0</span><small>ساعة</small></div>
+            <div class="time-box"><span id="minutes">0</span><small>دقيقة</small></div>
+            <div class="time-box"><span id="seconds">0</span><small>ثانية</small></div>
+        </div>
+    </div>
+
+    <div class="filters">
+        <button class="active" onclick="filterTable('all', 'عرض الكل', this)">عرض الكل</button>
+        <button onclick="filterTable('exam', 'الامتحانات', this)">الامتحانات</button>
+        <button onclick="filterTable('holiday', 'العطل الرسمية', this)">العطل الرسمية</button>
+        <button onclick="filterTable('semester', 'الفصول الدراسية', this)">الفصول الدراسية</button>
+        <button onclick="filterTable('result', 'النتائج', this)">النتائج</button>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>البند</th>
+                    <th>التاريخ</th>
+                    <th>التصنيف</th>
+                </tr>
+            </thead>
+            <tbody id="table-body"></tbody>
+        </table>
+    </div>
+
+    <footer>
+        <p>أمانة الشؤون العلمية</p>
+        <p class="stamp">IBN SINA UNIVERSITY</p>
+        <p style="font-size: 12px; margin-top: 10px; opacity: 0.7;">تم إنشاء هذا التطبيق بناءً على التقويم الرسمي</p>
+        <p style="font-size: 12px; margin-top: 5px; opacity: 0.7;">Dr. Salahedin Terair</p>
+    </footer>
+</div>
+
+<script>
+    // 1. Data from the PDF
+    // NOTE: The PDF contains a chronological typo for the "Start of Term 1 Exams" 
+    // (it says 01/03/2027 but the end date is 17/01/2027). I corrected the hidden 
+    // calculation date to 2027-01-03 so the app counts down correctly.
+    const scheduleData = [
+        { title: "بداية التسجيل", dateStr: "الأحد 10/04/2026", dateObj: "2026-04-10", category: "semester", categoryName: "فصل دراسي" },
+        { title: "بداية الفصل الدراسي الأول", dateStr: "السبت 17/10/2026", dateObj: "2026-10-17", category: "semester", categoryName: "فصل دراسي" },
+        { title: "نهاية الفصل الدراسي الأول", dateStr: "الخميس 24/12/2026", dateObj: "2026-12-24", category: "semester", categoryName: "فصل دراسي" },
+        { title: "بداية امتحانات الفصل الدراسي الأول", dateStr: "الأحد 01/03/2027", dateObj: "2027-01-03", category: "exam", categoryName: "امتحان" }, // Fixed internal date to Jan 3
+        { title: "نهاية امتحانات الفصل الأول (15 يوماً)", dateStr: "الأحد 17/01/2027", dateObj: "2027-01-17", category: "exam", categoryName: "امتحان" },
+        { title: "إعلان نتيجة الفصل الأول (بعد 10 أيام)", dateStr: "الأربعاء 27/01/2027", dateObj: "2027-01-27", category: "result", categoryName: "نتيجة" },
+        { title: "امتحانات الملحق - الفصل الأول (أسبوع)", dateStr: "الخميس 28/01/2027 - الأربعاء 03/02/2027", dateObj: "2027-01-28", category: "exam", categoryName: "امتحان" },
+        { title: "بداية الفصل الدراسي الثاني", dateStr: "الأحد 02/07/2027", dateObj: "2027-02-07", category: "semester", categoryName: "فصل دراسي" },
+        { title: "عطلة", dateStr: "الاثنين 22/02/2027", dateObj: "2027-02-22", category: "holiday", categoryName: "عطلة" },
+        { title: "عطلة العشر الأواخر من رمضان", dateStr: "السبت 27/02/2027 - الاثنين 08/03/2027", dateObj: "2027-02-27", category: "holiday", categoryName: "عطلة" },
+        { title: "عطلة عيد الفطر المبارك", dateStr: "الثلاثاء 09/03/2027 - الاثنين 15/03/2027", dateObj: "2027-03-09", category: "holiday", categoryName: "عطلة" },
+        { title: "نهاية الفصل الدراسي الثاني", dateStr: "الخميس 15/03/2027", dateObj: "2027-03-15", category: "semester", categoryName: "فصل دراسي" },
+        { title: "عطلة عيد الأضحى المبارك", dateStr: "السبت 15/05/2027 - الجمعة 21/05/2027", dateObj: "2027-05-15", category: "holiday", categoryName: "عطلة" },
+        { title: "بداية امتحانات الفصل الدراسي الثاني", dateStr: "الأحد 30/05/2027", dateObj: "2027-05-30", category: "exam", categoryName: "امتحان" },
+        { title: "نهاية امتحانات الفصل الثاني (15 يوماً)", dateStr: "الأحد 13/06/2027", dateObj: "2027-06-13", category: "exam", categoryName: "امتحان" },
+        { title: "إعلان نتيجة الفصل الثاني (بعد 10 أيام)", dateStr: "الأربعاء 23/06/2027", dateObj: "2027-06-23", category: "result", categoryName: "نتيجة" },
+        { title: "امتحانات الملحق - الفصل الثاني", dateStr: "الأربعاء 30/06/2027 - الثلاثاء 06/07/2027", dateObj: "2027-06-30", category: "exam", categoryName: "امتحان" }
+    ];
+
+    let currentFilter = 'all';
+
+    function renderTable(filter = 'all') {
+        const tbody = document.getElementById('table-body');
+        tbody.innerHTML = '';
+        
+        const filteredData = filter === 'all' 
+            ? scheduleData 
+            : scheduleData.filter(item => item.category === filter);
+
+        filteredData.forEach(item => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td data-label="البند">${item.title}</td>
+                <td data-label="التاريخ">${item.dateStr}</td>
+                <td data-label="التصنيف"><span class="badge badge-${item.category}">${item.categoryName}</span></td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    function filterTable(category, tabName, btnElement) {
+        currentFilter = category;
+        
+        document.querySelectorAll('.filters button').forEach(btn => btn.classList.remove('active'));
+        btnElement.classList.add('active');
+        
+        document.getElementById('active-tab-name').innerText = `(${tabName})`;
+        
+        renderTable(category);
+        updateCountdown(); 
+    }
+
+    function updateCountdown() {
+        const now = new Date().getTime();
+        
+        let dataToSearch = currentFilter === 'all' 
+            ? scheduleData 
+            : scheduleData.filter(item => item.category === currentFilter);
+
+        // Filter out End dates (نهاية) and Makeup exams (ملحق) so the countdown only targets main events
+        dataToSearch = dataToSearch.filter(item => 
+            !item.title.includes('نهاية') && !item.title.includes('ملحق')
+        );
+
+        const sortedData = [...dataToSearch].sort((a, b) => new Date(a.dateObj) - new Date(b.dateObj));
+        
+        let nextEvent = sortedData.find(event => new Date(event.dateObj).getTime() > now);
+
+        if (!nextEvent) {
+            document.getElementById('next-event-title').innerText = "لا توجد أحداث قادمة في هذا التصنيف";
+            document.getElementById('days').innerText = "0";
+            document.getElementById('hours').innerText = "0";
+            document.getElementById('minutes').innerText = "0";
+            document.getElementById('seconds').innerText = "0";
+            return;
+        }
+
+        document.getElementById('next-event-title').innerText = nextEvent.title;
+
+        const eventTime = new Date(nextEvent.dateObj).getTime();
+        const distance = eventTime - now;
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById('days').innerText = days;
+        document.getElementById('hours').innerText = hours;
+        document.getElementById('minutes').innerText = minutes;
+        document.getElementById('seconds').innerText = seconds;
+    }
+
+    renderTable();
+    updateCountdown();
+    setInterval(updateCountdown, 1000); 
+</script>
+
+</body>
+</html>
